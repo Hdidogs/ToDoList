@@ -84,31 +84,23 @@ public class SQLHelper {
         return resultSet;
     }
 
-    public static int[] getAllTacheFromListe(ResultSet id_liste) throws SQLException {
-        int i = 0;
-
-        while (id_liste.next()) {
-            i = i + 1;
-        }
-
-        int[] id_tache = new int[i];
-
+    public static ResultSet getAllTacheFromListe(int id_liste) throws SQLException {
         PreparedStatement preparedStatement = connectBDD().prepareStatement("SELECT id_tache FROM tache WHERE ref_liste = ?");
 
-        i = 0;
+        preparedStatement.setInt(1, id_liste);
 
-        while (id_liste.next()) {
-            i = i + 1;
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-            preparedStatement.setInt(1, id_liste.getInt("id_liste"));
+        return resultSet;
+    }
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+    public static ResultSet getAllTypeFromTache(int id_tache) throws SQLException {
+        PreparedStatement preparedStatement = connectBDD().prepareStatement("SELECT ref_type FROM tachetype WHERE ref_tache = ?");
 
-            while (resultSet.next()) {
-                id_tache = new int[]{resultSet.getInt("id_tache")};
-            }
-        }
+        preparedStatement.setInt(1, id_tache);
 
-        return id_tache;
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        return resultSet;
     }
 }
